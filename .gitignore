@@ -11,3 +11,4 @@ composer.lock
 .phpunit.result.cache
 .php-cs-fixer.cache
 Thumbs.db
+.env
