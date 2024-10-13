@@ -12,3 +12,4 @@ composer.lock
 .php-cs-fixer.cache
 Thumbs.db
 .env
+package-lock.json
