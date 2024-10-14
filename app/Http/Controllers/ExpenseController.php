@@ -13,7 +13,8 @@ class ExpenseController extends Controller
      */
     public function index()
     {
-        //
+        $expenses = Expense::all();
+        return response()->json($expenses);
     }
 
     /**
@@ -29,7 +30,17 @@ class ExpenseController extends Controller
      */
     public function store(StoreExpenseRequest $request)
     {
-        //
+
+        $validatedData = $request->validate([
+            'name'             => 'required|string|max:255',
+            'amount'           => 'required|numeric',
+            'category_id'      => 'nullable|exists:categories,id',
+            'transaction_date' => 'required|date',
+            'notes'            => 'nullable|string',
+        ]);
+
+        $expense = Expense::create($validatedData);
+        return response()->json($expense, 201);
     }
 
     /**

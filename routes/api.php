@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExpenseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,3 +14,5 @@ Route::get('/tokens/create', function (Request $request) {
     dd($token);
     return ['token' => $token->plainTextToken];
 });
+
+Route::apiResource('expense', ExpenseController::class);
