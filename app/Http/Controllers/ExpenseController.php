@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreExpenseRequest;
 use App\Http\Requests\UpdateExpenseRequest;
+use App\Http\Resources\Expense as ResourcesExpense;
 use App\Models\Expense;
 
 class ExpenseController extends Controller
@@ -13,16 +14,21 @@ class ExpenseController extends Controller
      */
     public function index()
     {
-        $expenses = Expense::all();
-        return response()->json($expenses);
-    }
+        $expenses = Expense::with('category')->get();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        dd(ResourcesExpense::collection($expenses)->json());
+
+        $item = [];
+
+        foreach( $expenses as $expense ) {
+            $item[] = ResourcesExpense::collection($expense);
+        }
+
+        dd($item);
+
+        // dd($expenses);
+
+        return ResourcesExpense::collection($expenses);
     }
 
     /**
@@ -44,27 +50,17 @@ class ExpenseController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Expense $expense)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Expense $expense)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(UpdateExpenseRequest $request, Expense $expense)
     {
-        //
+        $expense = Expense::findOrFail($expense);
+        $expense->update($request->all());
+
+        return response()->json([
+            'message' => "Updated"
+        ]);
+
     }
 
     /**

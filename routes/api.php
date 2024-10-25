@@ -15,4 +15,6 @@ Route::get('/tokens/create', function (Request $request) {
     return ['token' => $token->plainTextToken];
 });
 
-Route::apiResource('expense', ExpenseController::class);
+Route::apiResources([
+    'expense' => ExpenseController::class
+]);
